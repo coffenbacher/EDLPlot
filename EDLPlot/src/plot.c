@@ -1,32 +1,10 @@
-/*!
-  \file sdldrawtest.c
-  \author Mario Palomo <mpalomo@ihman.com>
-  \date 05-2002
-
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Library General Public
-  License as published by the Free Software Foundation; either
-  version 2 of the License, or (at your option) any later version.
-
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Library General Public License for more details.
-
-  You should have received a copy of the GNU Library General Public
-  License along with this library; if not, write to the Free Foundation,
-  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-*/
-#ifdef WIN32
-#include <windows.h>
-#endif
-
 #include <stdlib.h>
 #include "SDL/SDL.h"
 
 #include "SDL_draw.h"
+#include "edlPlot.h"
 
-/*Hardware surfaces*/
+
 Uint32 FastestFlags(Uint32 flags, unsigned int width, unsigned int height,
  unsigned int bpp)
 {
@@ -50,16 +28,6 @@ Uint32 FastestFlags(Uint32 flags, unsigned int width, unsigned int height,
   return flags;
 }
 
-/*----------------------------------------------------------------------*/
-#ifdef WIN32
-int WINAPI WinMain(HINSTANCE hInstance,
-                   HINSTANCE hPrevInstance,
-                   LPSTR lpCmdLine,
-                   int iCmdShow)
-{
-  return main(__argc, __argv);
-}
-#endif //WIN32
 /*----------------------------------------------------------------------*/
 int main(int argc, char *argv[])
 {
@@ -117,19 +85,22 @@ int main(int argc, char *argv[])
     exit(2);
   }
 
-{/*BEGIN*/
-  Uint32 c_white = SDL_MapRGB(screen->format, 255,255,255);
-  Uint32 c_gray = SDL_MapRGB(screen->format, 200,200,200);
-  Uint32 c_dgray= SDL_MapRGB(screen->format, 64,64,64);
-  Uint32 c_cyan = SDL_MapRGB(screen->format, 32,255,255);
+{
 
-  //SDL_Rect r = {100,300,50,50};
-  //SDL_SetClipRect(screen, &r);  //Test of clipping code
+  //Define Colors
 
+  //1: White
+  //2: Gray
+  //3: Dark Gray
+  //4: Red
+  //5: Green
+  //6: Blue
+  Uint32 c_colors[] = {SDL_MapRGB(screen->format, 255,255,255), SDL_MapRGB(screen->format, 200,200,200),
+		  SDL_MapRGB(screen->format, 64,64,64),  SDL_MapRGB(screen->format, 255,0,0),
+		  SDL_MapRGB(screen->format, 0,255,0), SDL_MapRGB(screen->format, 0,0,255)};
 
-  Draw_Line(screen, 100,100, 30,0, c_white);
-  Draw_Line(screen, 30,0, 100,100, c_white);
-
+  plotAxes(screen, c_colors, width, height, -20, 30, -20, 20);
+  plotLine(screen, c_colors);
 
   SDL_UpdateRect(screen, 0, 0, 0, 0);
 
@@ -164,3 +135,6 @@ int main(int argc, char *argv[])
 
 }/*main*/
 /*----------------------------------------------------------------------*/
+
+
+
